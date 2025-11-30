@@ -1,0 +1,36 @@
+# Containerlab generated files
+clab-*/
+*.log
+
+# Log files
+logs/
+*.log
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+.pytest_cache/
+*.egg-info/
+
+# Temporary files
+*.tmp
+.cache/

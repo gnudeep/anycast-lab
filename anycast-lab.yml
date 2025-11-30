@@ -1,0 +1,68 @@
+name: anycast-lab
+
+topology:
+  nodes:
+    router:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - router/frr.conf:/etc/frr/frr.conf
+        - router/daemons:/etc/frr/daemons
+        - router/vtysh.conf:/etc/frr/vtysh.conf
+        - scripts/setup-router.sh:/setup.sh
+      exec:
+        - sh /setup.sh
+
+    pop1:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - pop1/frr.conf:/etc/frr/frr.conf
+        - pop1/daemons:/etc/frr/daemons
+        - pop1/vtysh.conf:/etc/frr/vtysh.conf
+        - scripts/setup-pop1.sh:/setup.sh
+      exec:
+        - sh /setup.sh
+
+    pop2:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - pop2/frr.conf:/etc/frr/frr.conf
+        - pop2/daemons:/etc/frr/daemons
+        - pop2/vtysh.conf:/etc/frr/vtysh.conf
+        - scripts/setup-pop2.sh:/setup.sh
+      exec:
+        - sh /setup.sh
+
+    regionA:
+      kind: linux
+      image: nginx:latest
+      binds:
+        - scripts/setup-region.sh:/setup.sh
+      exec:
+        - bash /setup.sh A 10.10.1.10
+
+    regionB:
+      kind: linux
+      image: nginx:latest
+      binds:
+        - scripts/setup-region.sh:/setup.sh
+      exec:
+        - bash /setup.sh B 10.20.1.10
+
+    client1:
+      kind: linux
+      image: alpine:latest
+      binds:
+        - scripts/setup-client.sh:/setup.sh
+        - scripts/client-demo.sh:/client-demo.sh
+      exec:
+        - sh /setup.sh
+
+  links:
+    - endpoints: ["client1:eth1", "router:eth1"]
+    - endpoints: ["router:eth2", "pop1:eth1"]
+    - endpoints: ["router:eth3", "pop2:eth1"]
+    - endpoints: ["pop1:eth2", "regionA:eth1"]
+    - endpoints: ["pop2:eth2", "regionB:eth1"]
