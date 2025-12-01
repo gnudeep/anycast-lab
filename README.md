@@ -26,7 +26,7 @@ The lab simulates an anycast architecture where multiple Points of Presence (PoP
                     └──┬───────┬──┘
                        │       │
            ┌───────────┘       └───────────┐
-           │                                │
+           │                               │
     ┌──────┴──────┐                  ┌─────┴───────┐
     │    pop1     │                  │    pop2     │
     │ 10.0.1.2/24 │ (AS 65001)       │ 10.0.2.2/24 │ (AS 65002)
